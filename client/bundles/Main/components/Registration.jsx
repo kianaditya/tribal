@@ -36,14 +36,16 @@ export class Registration extends Component {
     onSubmit = () => {
         event.preventDefault()
     
-        axios({
-          method: 'post',
-          url: '/users/sign_up',
-          data: {
+        axios.post('/users/sign_up',
+           {
             name: this.state.name
-          }
-        });
-      }
+          
+        }).then(response => {
+            console.log(response);
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
 
     onClick(event){
         event.preventDefault()
