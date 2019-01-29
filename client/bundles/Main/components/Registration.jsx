@@ -65,19 +65,25 @@ export class Registration extends Component {
 			password: "",
 			password_confirmation: ""
 		};
-		this.onChange = this.onChange.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
 	}
 
 	onSubmit() {
 		event.preventDefault();
 
-		axios({
-			method: "post",
-			url: "/users",
-			data: {
-				name: this.state.name
-			}
-		});
+		axios.post("/users",{
+				first_name: this.state.first_name,
+			last_name: this.state.last_name,
+			email: this.state.email,
+			password: this.state.password,
+			password_confirmation: this.state.password_confirmation
+		}).then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
 	}
 
 	onClick(event) {
