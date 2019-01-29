@@ -5,5 +5,5 @@ import Registration from '../bundles/Main/components/Registration'
 
 ReactOnRails.register({
 	Main,
-	Registration
+	Registration,
 });
