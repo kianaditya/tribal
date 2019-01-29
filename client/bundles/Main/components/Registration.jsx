@@ -1,44 +1,26 @@
 import React, { Component } from 'react'
 
 const axios = require('axios');
-
-
- function RegistrationForm(props) {
-  return (
-    <div>
-        <form onSubmit={props.onSubmit}>
-            <label htmlFor="First name">First name</label>
-                <input name="First name" type="text"/> 
-            <label htmlFor="Last name">Last name</label>
-                <input name="Last name" type="text"/>
-            <label htmlFor="Email">Email</label>
-                <input name="Email" type="email"/>
-            <label htmlFor="password">Password</label>
-                <input name="Password" type="password"/>
-            <label htmlFor="password_confirmation">Password Confirmation</label>
-                <input name="Password confirmation" type="password"/>
-            <button name="Submit" type="submit">Submit</button>
-        </form>
-        
-    </div>
-  )
-}
-
-
 export class Registration extends Component {
     constructor(){
         super()
         this.state = {
-            user_role: ''
+            user_role: '',
+            first_name: '',
+            last_name: '',
+            email:'',
+            password: '',
+            password_confirmation:''
         }
     }
 
-    onSubmit = () => {
+    onSubmit (event) {
+        debugger
         event.preventDefault()
     
-        axios.post('/users/sign_up',
+        axios.post('http://localhost:3000/users',
            {
-            name: this.state.name
+            // first_name: this.state.first_name
           
         }).then(response => {
             console.log(response);
@@ -54,6 +36,13 @@ export class Registration extends Component {
         })
     }
 
+    onChange(event){
+        console.log(event)
+        this.setState({
+            [event.target.id]: event.target.value
+        })
+    }
+
 
   render() {
     return (
@@ -61,7 +50,19 @@ export class Registration extends Component {
         <h1>I am a</h1>
         <button name="user_role" value="Trainee" onClick = {this.onClick}>Trainee</button>
         <button name="user_role" value="Coach" onClick = {this.onClick}>Coach</button>
-        <RegistrationForm onSubmit={this.onSubmit}/>
+        <form onSubmit={event => this.onSubmit(event)}>
+            <label htmlFor="First name">First name</label>
+                <input value={this.state.first_name} onChange={event => this.onChange(event)} id="first_name" name="First name" type="text"/> 
+            <label htmlFor="Last name">Last name</label>
+                <input value={this.state.first_name} onChange={this.onChange} name="Last name" type="text"/>
+            <label htmlFor="Email">Email</label>
+                <input value={this.state.email} onChange={this.onChange} name="Email" type="email"/>
+            <label htmlFor="password">Password</label>
+                <input value={this.state.password} onChange={this.onChange} name="Password" type="password"/>
+            <label htmlFor="password_confirmation">Password Confirmation</label>
+                <input value={this.state.password_confirmation} onChange={this.onChange} name="Password confirmation" type="password"/>
+            <button name="Submit" type="submit">Submit</button>
+        </form>
       </div>
     )
   }
