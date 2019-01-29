@@ -7,7 +7,7 @@ Feature: User can sign up
     Given the following user exists
     | first_name  | last_name | email         | password | password_confirmation |
     | Hanna       | Nyman     | hanna@mail.se | password | password              |
-    And I am on Sign up page
+    And I visit Sign up page
 		Then I should see 'I am a'
 		Then I click 'Trainee'
 
