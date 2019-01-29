@@ -8,7 +8,7 @@ const axios = require('axios');
     <div>
         <form onSubmit={props.onSubmit}>
             <label htmlFor="First name">First name</label>
-                <input onChange={props.onChange} value={props.first_name} id="first_name" type="text"/> 
+                <input onChange={props.onChange} value={props.first_name} id="first_name" name="First name" type="text"/> 
             <label htmlFor="Last name">Last name</label>
                 <input onChange={props.onChange} value={props.last_name} name="Last name" type="text"/>
             <label htmlFor="Email">Email</label>
@@ -34,7 +34,8 @@ export class Registration extends Component {
             email: '',
             password: '',
             password_confirmation: ''
-        }
+        };
+        this.onChange = this.onChange.bind(this);
     }
 
     onSubmit () {
@@ -57,9 +58,9 @@ export class Registration extends Component {
     }
 
     onChange(){
-        console.log(event.target)
+        console.log(event.target.id,event.target.value)
         this.setState({
-            [event.target.name]: event.target.value
+            [event.target.id]: event.target.value
         })
     }
 
