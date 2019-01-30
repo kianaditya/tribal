@@ -1,3 +1,4 @@
+@javascript
 Feature: User can sign up
 
     As a Visitor
@@ -17,5 +18,5 @@ Feature: User can sign up
         And I fill in 'Password confirmation' field with 'password'
         And I fill in 'First name' field with 'Real'
         And I fill in 'Last name' field with 'User'
-        And I click 'Submit'
+        And I click 'Sign up'
         Then I should see 'Hello, realuser@mail.com'
