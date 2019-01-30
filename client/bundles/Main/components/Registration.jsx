@@ -1,58 +1,8 @@
 import React, { Component } from "react";
+import ReactOnRails from 'react-on-rails';
+import RegistrationForm from './RegistrationForm';
 
 const axios = require("axios");
-
-function RegistrationForm(props) {
-	return (
-		<div>
-			<form onSubmit={props.onSubmit}>
-				<label htmlFor="First name">First name</label>
-				<input
-					onChange={props.onChange}
-					value={props.first_name}
-					id="first_name"
-					name="First name"
-					type="text"
-				/>
-				<label htmlFor="Last name">Last name</label>
-				<input
-					onChange={props.onChange}
-					value={props.last_name}
-					id="last_name"
-					name="Last name"
-					type="text"
-				/>
-				<label htmlFor="Email">Email</label>
-				<input
-					onChange={props.onChange}
-					value={props.email}
-					id="email"
-					name="Email"
-					type="email"
-				/>
-				<label htmlFor="password">Password</label>
-				<input
-					onChange={props.onChange}
-					value={props.password}
-					id="password"
-					name="Password"
-					type="password"
-				/>
-				<label htmlFor="password_confirmation">Password Confirmation</label>
-				<input
-					onChange={props.onChange}
-					value={props.password_confirmation}
-					id="password_confirmation"
-					name="Password confirmation"
-					type="password"
-				/>
-				<button name="Submit" type="submit">
-					Submit
-				</button>
-			</form>
-		</div>
-	);
-}
 
 export class Registration extends Component {
 	constructor() {
@@ -72,13 +22,20 @@ export class Registration extends Component {
 	onSubmit() {
 		event.preventDefault();
 
-		axios.post("/users",{
-				first_name: this.state.first_name,
-			last_name: this.state.last_name,
-			email: this.state.email,
-			password: this.state.password,
-			password_confirmation: this.state.password_confirmation
-		}).then(function (response) {
+		const csrfToken = ReactOnRails.authenticityToken();
+		let registrationForm = document.getElementById('Registration-form');
+		const data = new FormData(registrationForm);
+
+		const config = {
+			headers: {
+			  'Content-Type': 'application/x-www-form-urlencoded',
+			//   'Accept': 'application/json',
+			  'X-CSRF-Token': csrfToken
+			}
+		  };
+
+		axios.post("/users",data,config)
+		.then(function (response) {
             console.log(response);
           })
           .catch(function (error) {
@@ -94,7 +51,6 @@ export class Registration extends Component {
 	}
 
 	onChange() {
-		console.log(event.target.id, event.target.value);
 		this.setState({
 			[event.target.id]: event.target.value
 		});
