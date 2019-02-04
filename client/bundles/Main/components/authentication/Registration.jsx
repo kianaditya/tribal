@@ -16,7 +16,8 @@ export class Registration extends Component {
 			password_confirmation: "",
 			roleChoiceStatus: false,
 			displayForm: false,
-			formErrors: ""
+			formErrors: "",
+			sessionId: ""
 		};
 		this.onChange = this.onChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
@@ -25,10 +26,19 @@ export class Registration extends Component {
 		this.onLoginEmailClick = this.onLoginEmailClick.bind(this);
 	}
 
-	fbLogin(){
+	componentDidMount() {
+		let session = document.location.hash.slice(1);
+		if (session) {
+			this.setState({
+				sessionId: session
+			});
+		}
+	}
+
+	fbLogin() {
 		let role = this.state.role;
-		let params = '?role=' + role;
-		let authUrl = '/users/auth/facebook';
+		let params = "?role=" + role;
+		let authUrl = "/users/auth/facebook";
 		document.location.href = authUrl + params;
 	}
 
@@ -47,15 +57,21 @@ export class Registration extends Component {
 			.post("/users", data, config)
 			.then(response => {
 				if (response.data.errors) {
-					let errors = Object.entries(response.data.errors).join('\n').replace(/,|_/g, ' ');
+					let errors = Object.entries(response.data.errors)
+						.join("\n")
+						.replace(/,|_/g, " ");
 					this.setState({
 						formErrors: errors
 					});
 				} else {
-					document.location.href = "/";
+					if (this.state.sessionId) {
+						document.location.href = "/sessions/" + this.state.sessionId;
+					} else {
+						document.location.href = "/";
+					}
 				}
 			})
-			.catch(function (error) {
+			.catch(function(error) {
 				console.log(error);
 			});
 	}
@@ -76,11 +92,11 @@ export class Registration extends Component {
 		event.preventDefault();
 		this.setState(prevState => ({
 			roleChoiceStatus: !prevState.roleChoiceStatus,
-			role: event.target.value,
+			role: event.target.value
 		}));
 	}
 
-	onLoginEmailClick(){
+	onLoginEmailClick() {
 		event.preventDefault();
 		this.setState(prevState => ({
 			displayForm: !prevState.displayForm
@@ -93,31 +109,45 @@ export class Registration extends Component {
 				<div style={this.state.roleChoiceStatus ? { display: "none" } : {}}>
 					<h1>I am a</h1>
 					<div className="content wrapper">
-						<button className="button" id = "role" name="role" value= "0" onClick={this.onRoleClick}>
+						<button
+							className="button"
+							id="role"
+							name="role"
+							value="0"
+							onClick={this.onRoleClick}
+						>
 							Trainee
 						</button>
-						<button className="button" id = "role" name="role" value="1" onClick={this.onRoleClick}>
+						<button
+							className="button"
+							id="role"
+							name="role"
+							value="1"
+							onClick={this.onRoleClick}
+						>
 							Coach
 						</button>
 					</div>
 				</div>
 				<div style={this.state.roleChoiceStatus ? {} : { display: "none" }}>
-					<div className="mt-4 text-center whitespace-pre-wrap">{this.state.formErrors}</div>
-						<div className="wrapper-col" style={this.state.displayForm ?  { display: "none" } : {} }>
-							<button
-								className="button m-4"
-								onClick={this.fbLogin}
-							>
-								Register with Facebook
-							</button>
-							<button
-								id = "displayForm"
-								className="button m-4"
-								onClick={this.onLoginEmailClick}
-							>
-								Register with Email
-							</button>
-						</div>
+					<div className="mt-4 text-center whitespace-pre-wrap">
+						{this.state.formErrors}
+					</div>
+					<div
+						className="wrapper-col"
+						style={this.state.displayForm ? { display: "none" } : {}}
+					>
+						<button className="button m-4" onClick={this.fbLogin}>
+							Register with Facebook
+						</button>
+						<button
+							id="displayForm"
+							className="button m-4"
+							onClick={this.onLoginEmailClick}
+						>
+							Register with Email
+						</button>
+					</div>
 					<div style={this.state.displayForm ? {} : { display: "none" }}>
 						<RegistrationForm
 							onSubmit={this.onSubmit}
@@ -130,7 +160,6 @@ export class Registration extends Component {
 							role={this.state.role}
 						/>
 					</div>
-
 				</div>
 			</div>
 		);
