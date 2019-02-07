@@ -20,10 +20,10 @@
     "webpack-dev-server": "2.11.2"
   },
   "scripts": {
-		"start": "http-server ."
-	},
-	"cacheDirectories": [
-		"node_modules",
-		"client/node_modules"
-	]
+    "start": "http-server ."
+  },
+  "cacheDirectories": [
+    "node_modules",
+    "client/node_modules"
+  ]
 }
