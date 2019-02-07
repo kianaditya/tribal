@@ -20,6 +20,11 @@
     "webpack-dev-server": "2.11.2"
   },
   "scripts": {
-    "start": "http-server ."
-  }
+		"start": "http-server .",
+		"postinstall": "cd client && npm install"
+	},
+	"cacheDirectories": [
+		"node_modules",
+		"client/node_modules"
+	]
 }
