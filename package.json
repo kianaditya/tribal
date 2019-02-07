@@ -21,7 +21,7 @@
   },
   "scripts": {
 		"start": "http-server .",
-		"postinstall": "cd client && npm install"
+		"postinstall": "npm install"
 	},
 	"cacheDirectories": [
 		"node_modules",
